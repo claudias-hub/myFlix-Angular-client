@@ -1,5 +1,43 @@
 # MyFlixAngularClient
 
+* Overview
+MyFlix Angular Client is the frontend for the myFlix movie API. It’s built with Angular (standalone app, routing + SCSS) and will grow to include login/registration, movie list, single movie view, and profile management.
+
+* Backend API
+Base URL: https://movie-api-w67x.onrender.com/
+Auth: JWT token returned by POST /login must be sent as Bearer token for protected routes.
+
+* Prerequisites
+Node.js 18+ and npm
+Angular CLI (installed globally): npm install -g @angular/cli
+
+* Run locally
+npm install
+ng serve --open
+
+* API Service (fetch-api-data.ts)
+
+- Public:
+POST /users — userRegistration(userDetails)
+POST /login — userLogin(userDetails)
+
+- Protected (send Authorization: Bearer ):
+GET /movies — getAllMovies()
+GET /movies/:title — getMovieByTitle(title)
+GET /directors/:name — getDirectorByName(name)
+GET /genres/:name — getGenreByName(name)
+GET /users/:username — getUser(username)
+GET /users/:username/movies — getFavoriteMovies(username)
+POST /users/:username/movies/:movieId — addFavoriteMovie(username, movieId)
+PUT /users/:username — editUser(username, updateData)
+DELETE /users/:username — deleteUser(username)
+DELETE /users/:username/movies/:movieId — removeFavoriteMovie(username, movieId)
+
+* Notes
+This project uses Angular’s standalone setup (no app.module.ts). HttpClient is provided in app.config.ts via provideHttpClient().
+
+
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.5.
 
 ## Development server

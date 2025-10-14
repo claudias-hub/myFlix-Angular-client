@@ -1,0 +1,83 @@
+<!-- src/app/user-registration-form/user-registration-form.html -->
+
+  
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Sign Up!</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form #regForm="ngForm" (ngSubmit)="registerUser(regForm)">
+      <mat-form-field appearance="outline" style="display:block;">
+        <input
+          matInput
+          [(ngModel)]="userData.Username"
+          name="Username"
+          type="text"
+          placeholder="Username"
+          required
+          minlength="5"
+          pattern="^[a-zA-Z0-9]+$"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="display:block;">
+        <input
+          matInput
+          [(ngModel)]="userData.Password"
+          name="Password"
+          type="password"
+          placeholder="Password"
+          required
+          minlength="6"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="display:block;">
+        <input
+          matInput
+          [(ngModel)]="userData.Email"
+          name="Email"
+          type="email"
+          placeholder="Email"
+          required
+        />
+      </mat-form-field>
+
+      <!-- <mat-form-field appearance="outline" style="display:block;">
+        <input
+          matInput
+          [(ngModel)]="userData.Birthday"
+          name="Birthday"
+          type="date"
+          placeholder="Birthday"
+          required
+        />
+      </mat-form-field> -->
+
+      <mat-form-field appearance="outline" style="display:block;">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          [(ngModel)]="userData.Birthday"
+          name="Birthday"
+          placeholder="Birthday"
+          required
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-card-actions>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="submit" 
+          [disabled]="!regForm.form.valid || isSubmitting"
+        >
+          {{ isSubmitting ? 'Signing up...' : 'Sign Up' }}
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+</mat-card>
