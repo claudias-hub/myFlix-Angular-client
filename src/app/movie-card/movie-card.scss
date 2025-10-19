@@ -1,0 +1,56 @@
+//src/app/movie-card/movie-card.scss
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  padding: 12px 0;
+}
+
+mat-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+mat-card-title {
+  padding: 8px 12px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+mat-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  max-height: 260px;
+  border-radius: 4px;
+}
+
+mat-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px 10px;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px 10px;
+}
+
+.left-actions {
+  display: inline-flex;
+  gap: 6px; /* space between Genre / Director / Synopsis */
+  flex-wrap: wrap; /* wrap on narrow cards */
+}
+
+/* Optional: smaller button density */
+.left-actions .mat-mdc-button {
+  --mdc-text-button-container-height: 32px;
+  font-size: 12px;
+  padding: 0 8px;
+}

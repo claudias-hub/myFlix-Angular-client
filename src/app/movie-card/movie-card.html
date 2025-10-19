@@ -1,0 +1,33 @@
+<!-- src/app/movie-card/movie-card.html -->
+ 
+<mat-toolbar color="primary">
+  <span class="spacer"></span>
+  <a mat-button routerLink="/welcome">Home</a>
+  <a mat-button routerLink="/profile">Profile</a>
+  <button mat-button (click)="logout()">Logout</button>
+</mat-toolbar>
+
+<div class="movies-grid">
+  <mat-card *ngFor="let movie of movies">
+    <mat-card-title>{{ movie.title }}</mat-card-title>
+    <img 
+      [src]="movie.imageURL" 
+      alt="{{ movie?.title || 'Movie poster' }}"
+      title="{{ movie?.title || 'Movie poster' }}"
+    />
+    <mat-card-actions class="card-actions">
+      <div class="left-actions">
+        <button mat-button color="primary" (click)="openGenre(movie)" aria-label="Open director details for {{ movie.title }}">Genre</button>
+        <button mat-button color="primary" (click)="openDirector(movie)" aria-label="Open director details for {{ movie.title }}">Director</button>
+        <button mat-button color="primary" (click)="openSynopsis(movie)" aria-label="Open director details for {{ movie.title }}">Synopsis</button>
+      </div>
+      <button
+        mat-icon-button
+        [color]="isFavorited(movie._id) ? 'warn' : undefined"
+        (click)="toggleFavorite(movie)"
+        aria-label="Toggle favorite">
+        <mat-icon>{{ isFavorited(movie._id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -1,0 +1,67 @@
+<!-- src/app/profile/profile.html -->
+
+<mat-toolbar color="primary">
+  <span class="spacer"></span>
+  <a mat-button routerLink="/welcome">Home</a>
+  <a mat-button routerLink="/movies">All Movies</a>
+  <button mat-button (click)="logout()">Logout</button>
+</mat-toolbar>
+
+<div class="page-container">
+  <mat-card class="profile-card">
+    <mat-card-title class="section-title">My Profile</mat-card-title>
+    <mat-card-content>
+      <form>
+        <div class="form-grid">
+          <mat-form-field class="half" appearance="outline">
+            <mat-label>Username</mat-label>
+            <input aria-label="Username" matInput [(ngModel)]="user.username" name="username" />
+          </mat-form-field>
+
+          <mat-form-field class="half" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input aria-label="Email" matInput type="email" [(ngModel)]="user.email" name="email" />
+          </mat-form-field>
+
+          <mat-form-field class="half" appearance="outline">
+            <mat-label>Birthday</mat-label>
+            <input aria-label="Birthday" matInput type="date" [(ngModel)]="user.birthday" name="birthday" />
+          </mat-form-field>
+        </div>
+
+        <div class="actions-row" style="margin-top:8px">
+          <button mat-raised-button color="primary" (click)="saveProfile()">Save</button>
+          <button mat-flat-button color="warn" (click)="deleteAccount()">Delete account</button>
+        </div>
+      </form>
+
+      <div class="actions-row" style="margin-top:16px">
+        <mat-form-field class="half" appearance="outline">
+          <mat-label>New password</mat-label>
+          <input aria-label="Password" matInput #pwd type="password" />
+        </mat-form-field>
+        <div class="actions-row" style="align-items:center">
+          <button mat-stroked-button (click)="changePassword(pwd.value)">Change password</button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="favorites-card">
+    <mat-card-title class="section-title">My Favorites</mat-card-title>
+    <div class="movies-grid" *ngIf="movies.length; else noFavs">
+      <mat-card *ngFor="let movie of movies">
+        <mat-card-title>{{ movie.title }}</mat-card-title>
+        <img [src]="movie.imageURL" [alt]="movie.title" title="movie.title" />
+        <mat-card-actions>
+          <button mat-button color="warn" (click)="removeFavorite(movie._id)">Remove</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <ng-template #noFavs>
+      <mat-card-content>No favorites yet.</mat-card-content>
+    </ng-template>
+  </mat-card>
+</div>
+
+

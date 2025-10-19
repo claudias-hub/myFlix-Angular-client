@@ -1,4 +1,7 @@
+//src/app/user-login-form/user-login-form.ts
+
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 
@@ -35,7 +38,8 @@ export class UserLoginForm {
   constructor(
     private api: FetchApiData,
     private dialogRef: MatDialogRef<UserLoginForm>,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
   
   loginUser(form?: NgForm): void {
@@ -58,6 +62,7 @@ export class UserLoginForm {
         if (res?.user) localStorage.setItem('user', JSON.stringify(res.user));
         this.snackBar.open('Login successful', 'OK', { duration: 2000 });
         this.dialogRef.close();
+        this.router.navigate(['/movies']);
       },
       error: (err) => {
         let msg = 'Login failed';
@@ -71,4 +76,5 @@ export class UserLoginForm {
       complete: () => { this.isSubmitting = false; }
     });
   }
+  
 }

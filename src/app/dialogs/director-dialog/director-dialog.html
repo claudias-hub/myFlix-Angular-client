@@ -1,0 +1,12 @@
+<!-- src/app/dialogs/director-dialog/director-dialog.html -->
+
+<h2 mat-dialog-title class="dialog-title">Director</h2>
+<mat-dialog-content class="dialog-content">
+  <p><strong class="dialog-accent">{{ data.name }}</strong></p>
+  <p class="dialog-muted" *ngIf="data.bio">{{ data.bio }}</p>
+  <p *ngIf="data.birthYear">Born: {{ data.birthYear }}</p>
+  <p *ngIf="data.deathYear">Died: {{ data.deathYear }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

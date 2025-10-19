@@ -1,0 +1,37 @@
+<!-- src/app/welcome-page.html -->
+
+
+<div class="main-page">
+  <h1>Welcome to myFlix!</h1>
+  <div class="btn-row">
+    <button 
+      mat-stroked-button 
+      color="primary" 
+      (click)="openUserRegistrationDialog()"
+    >
+     Sign Up
+    </button>
+    <button 
+      mat-stroked-button color="accent" 
+      (click)="openUserLoginDialog()"
+    >
+     Login
+    </button>
+    <a 
+      mat-stroked-button 
+      color="primary" 
+      routerLink="/profile" 
+      style="margin-left: 10px;"
+    >
+     Profile
+    </a>
+    <a
+      mat-raised-button
+      color="primary"
+      routerLink="/movies"
+      style="margin-left: 10px;"
+    >
+     All Movies
+    </a>
+  </div>
+</div>

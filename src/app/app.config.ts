@@ -5,7 +5,7 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
-import { routes } from './app.routes';
+import { appRoutes } from './app.routes';
 
 // Material providers
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(),
-    provideRouter(routes),
+    provideRouter(appRoutes),
     provideAnimations(),
     provideNativeDateAdapter()
   ]
