@@ -9,9 +9,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FetchApiData } from '../fetch-api-data';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import {  } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -36,7 +37,11 @@ export class Profile implements OnInit {
   favoriteIds = new Set<string>();
   movies: any[] = []; // optionally display favorite movie cards
 
-  constructor(private api: FetchApiData, private snack: MatSnackBar) {}
+  constructor(
+    private api: FetchApiData, 
+    private snack: MatSnackBar,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadUserFromStorage();
@@ -63,17 +68,22 @@ export class Profile implements OnInit {
   saveProfile(): void {
     // Map to API expectations
     const payload = {
-      username: this.user.username,
       email: this.user.email,
       birthday: this.user.birthday
     };
-    this.api.editUser(this.user.username,payload).subscribe({
+
+    const originalUsername = JSON.parse(localStorage.getItem('user') || '{}').username;
+
+    this.api.editUser(originalUsername, payload).subscribe({
       next: (updated: any) => {
         localStorage.setItem('user', JSON.stringify(updated));
         this.snack.open('Profile updated', 'OK', { duration: 1500 });
         this.loadUserFromStorage();
       },
-      error: () => this.snack.open('Update failed', 'OK', { duration: 2000 })
+      error: (err) => {
+        console.error('Update error:', err); // ← Add this to see the error
+        this.snack.open('Update failed', 'OK', { duration: 2000 });
+      }
     });
   }
 
@@ -106,7 +116,7 @@ export class Profile implements OnInit {
       next: () => {
         localStorage.clear();
         this.snack.open('Account deleted', 'OK', { duration: 1500 });
-        window.location.href = '/welcome';
+        this.router.navigate(['']);
       },
       error: () => this.snack.open('Delete failed', 'OK', { duration: 2000 })
     });
@@ -115,6 +125,6 @@ export class Profile implements OnInit {
   logout(): void {
     localStorage.clear();
     this.snack.open('Logged out', 'OK', { duration: 1200 });
-    window.location.href = '/welcome';
+    this.router.navigate(['welcome']);
   }
 }

@@ -18,6 +18,7 @@
      Login
     </button>
     <a 
+      *ngIf="isLoggedIn()"
       mat-stroked-button 
       color="primary" 
       routerLink="/profile" 
@@ -26,6 +27,7 @@
      Profile
     </a>
     <a
+      *ngIf="isLoggedIn()"
       mat-raised-button
       color="primary"
       routerLink="/movies"

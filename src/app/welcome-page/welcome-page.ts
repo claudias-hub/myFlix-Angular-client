@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { UserRegistrationForm } from '../user-registration-form/user-registration-form';
@@ -8,12 +9,14 @@ import { UserLoginForm } from '../user-login-form/user-login-form';
 @Component({
   selector: 'app-welcome-page',
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule, UserRegistrationForm, UserLoginForm, RouterLink],
+  imports: [CommonModule, MatDialogModule, MatButtonModule, UserRegistrationForm, UserLoginForm, RouterLink],
   templateUrl: './welcome-page.html',
   styleUrls: ['./welcome-page.scss']
 })
 export class WelcomePage {
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog
+  ) {}
 
   openUserRegistrationDialog(): void {
     this.dialog.open(UserRegistrationForm, { width: '320px' });
@@ -21,5 +24,9 @@ export class WelcomePage {
 
   openUserLoginDialog(): void {
     this.dialog.open(UserLoginForm, { width: '320px' });
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
   }
 }

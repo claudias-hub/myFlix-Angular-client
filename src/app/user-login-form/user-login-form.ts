@@ -11,6 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { finalize } from 'rxjs/operators';
 
 import { FetchApiData } from '../fetch-api-data';
 
@@ -52,12 +53,12 @@ export class UserLoginForm {
       password: this.userData.Password
     };
 
-    // Adjust this.api.userLogin(...) to whatever your service method is named.
-    this.api.userLogin(payload).subscribe({
+    this.api.userLogin(payload)
+    .pipe(
+      finalize(() => { this.isSubmitting = false; }) // ← Always runs!
+    )
+    .subscribe({
       next: (res: any) => {
-        // Save token/user as returned by your backend
-        // Common patterns:
-        // res.token and res.user
         if (res?.token) localStorage.setItem('token', res.token);
         if (res?.user) localStorage.setItem('user', JSON.stringify(res.user));
         this.snackBar.open('Login successful', 'OK', { duration: 2000 });
@@ -72,9 +73,7 @@ export class UserLoginForm {
         else if (typeof e === 'string') msg = e;
         this.snackBar.open(msg, 'OK', { duration: 3000 });
         console.error('Login error:', err);
-      },
-      complete: () => { this.isSubmitting = false; }
+      }
     });
   }
-  
 }

@@ -14,6 +14,8 @@
       [src]="movie.imageURL" 
       alt="{{ movie?.title || 'Movie poster' }}"
       title="{{ movie?.title || 'Movie poster' }}"
+      (error)="handleImageError($event)"
+      class="movie-poster"
     />
     <mat-card-actions class="card-actions">
       <div class="left-actions">

@@ -11,7 +11,7 @@ import { FetchApiData } from '../fetch-api-data';
 import { GenreDialog } from '../dialogs/genre-dialog/genre-dialog';
 import { DirectorDialog } from '../dialogs/director-dialog/director-dialog';
 import { SynopsisDialog } from '../dialogs/synopsis-dialog/synopsis-dialog';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
     
 @Component({
@@ -42,10 +42,17 @@ export class MovieCard implements OnInit {
   constructor(
     public fetchApiData: FetchApiData, 
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.snackBar.open('Please log in first', 'OK', { duration: 2000 });
+      this.router.navigate(['welcome']);
+      return;
+    }
     this.loadUserFavorites();
     this.getMovies();
   }
@@ -162,6 +169,10 @@ export class MovieCard implements OnInit {
 
   logout(): void {
     localStorage.clear();
-    window.location.href = '/welcome';
+    this.router.navigate(['welcome']);
+  }
+
+  handleImageError(event: any): void {
+    (event.target as HTMLImageElement).src = 'https://via.placeholder.com/300x450/cccccc/666666?text=No+Image';
   }
 }
