@@ -12,7 +12,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (token) {
     return true;
   } else {
-    router.navigate(['welcome']);
+    router.navigate(['/myFlix-Angular-client/welcome']);  // Full path for GitHub Pages
     return false;
   }
 };

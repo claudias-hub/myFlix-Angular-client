@@ -50,7 +50,7 @@ export class MovieCard implements OnInit {
     const token = localStorage.getItem('token');
     if (!token) {
       this.snackBar.open('Please log in first', 'OK', { duration: 2000 });
-      this.router.navigate(['welcome']);
+      this.router.navigate(['/myFlix-Angular-client/welcome']);
       return;
     }
     this.loadUserFavorites();
@@ -169,7 +169,7 @@ export class MovieCard implements OnInit {
 
   logout(): void {
     localStorage.clear();
-    this.router.navigate(['welcome']);
+    this.router.navigate(['/myFlix-Angular-client/welcome']);
   }
 
   handleImageError(event: any): void {

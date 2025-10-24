@@ -12,7 +12,6 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
 import { FetchApiData } from '../fetch-api-data';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import {  } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -32,6 +31,7 @@ import {  } from '@angular/router';
   templateUrl: './profile.html',
   styleUrls: ['./profile.scss']
 })
+
 export class Profile implements OnInit {
   user: any = { username: '', email: '', birthday: '' };
   favoriteIds = new Set<string>();
@@ -44,6 +44,12 @@ export class Profile implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.snack.open('Please log in first', 'OK', { duration: 2000 });
+      this.router.navigate(['/myFlix-Angular-client/welcome']);
+      return;
+    }
     this.loadUserFromStorage();
     this.fetchFavoritesList();
   }
@@ -58,7 +64,7 @@ export class Profile implements OnInit {
   }
 
   fetchFavoritesList(): void {
-    // Optional: reuse getAllMovies and filter by favoriteIds to show favorite cards
+    // reuse getAllMovies and filter by favoriteIds to show favorite cards
     this.api.getAllMovies().subscribe({
       next: (all: any[]) => { this.movies = (all || []).filter(m => this.favoriteIds.has(String(m._id))); },
       error: () => {}
@@ -110,21 +116,20 @@ export class Profile implements OnInit {
   }
 
   deleteAccount(): void {
-    if (!confirm('Delete your account? This cannot be undone.')) return;
-    const username = this.user.username;
-    this.api.deleteUser(username).subscribe({
+    if (!confirm('Delete your account? This cannot be undone.')) return; 
+    this.api.deleteUser(this.user.username).subscribe({
       next: () => {
+        this.snack.open('Account deleted successfully', 'OK', { duration: 2000 });
         localStorage.clear();
-        this.snack.open('Account deleted', 'OK', { duration: 1500 });
-        this.router.navigate(['']);
+        this.router.navigate(['/myFlix-Angular-client/welcome']);  // Full path for GitHub Pages
       },
-      error: () => this.snack.open('Delete failed', 'OK', { duration: 2000 })
+      error: () => this.snack.open('Failed to delete account', 'OK', { duration: 2000 })
     });
   }
 
   logout(): void {
     localStorage.clear();
     this.snack.open('Logged out', 'OK', { duration: 1200 });
-    this.router.navigate(['welcome']);
+    this.router.navigate(['/myFlix-Angular-client/welcome']);  // Full path for GitHub Pages
   }
 }

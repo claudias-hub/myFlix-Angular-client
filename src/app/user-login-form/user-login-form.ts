@@ -39,7 +39,7 @@ export class UserLoginForm {
   constructor(
     private api: FetchApiData,
     private dialogRef: MatDialogRef<UserLoginForm>,
-    private snackBar: MatSnackBar,
+    private snack: MatSnackBar,
     private router: Router
   ) {}
   
@@ -61,9 +61,9 @@ export class UserLoginForm {
       next: (res: any) => {
         if (res?.token) localStorage.setItem('token', res.token);
         if (res?.user) localStorage.setItem('user', JSON.stringify(res.user));
-        this.snackBar.open('Login successful', 'OK', { duration: 2000 });
+        this.snack.open('Login successful', 'OK', { duration: 2000 });
         this.dialogRef.close();
-        this.router.navigate(['/movies']);
+        this.router.navigate(['/myFlix-Angular-client/movies']);  // Full path for GitHub Pages
       },
       error: (err) => {
         let msg = 'Login failed';
@@ -71,7 +71,7 @@ export class UserLoginForm {
         if (e?.info?.message) msg = e.info.message;
         else if (e?.message) msg = e.message;
         else if (typeof e === 'string') msg = e;
-        this.snackBar.open(msg, 'OK', { duration: 3000 });
+        this.snack.open(msg, 'OK', { duration: 3000 });
         console.error('Login error:', err);
       }
     });
