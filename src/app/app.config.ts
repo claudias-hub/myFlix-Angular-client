@@ -4,13 +4,16 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChang
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideNativeDateAdapter } from '@angular/material/core';
-
 import { appRoutes } from './app.routes';
-
-// Material providers
 import { provideAnimations } from '@angular/platform-browser/animations';
 
-
+/**
+ * Global application providers (standalone Angular app).
+ * - Router configured with appRoutes
+ * - HttpClient for HTTP requests
+ * - Animations and Material date adapter
+ * - Zone change detection and global error listeners
+ */
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),

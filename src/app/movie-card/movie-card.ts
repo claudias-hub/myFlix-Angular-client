@@ -14,6 +14,10 @@ import { SynopsisDialog } from '../dialogs/synopsis-dialog/synopsis-dialog';
 import { Router, RouterLink } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
     
+/**
+ * Movies page that lists all movies and lets the user view details
+ * (genre, director, synopsis) and toggle favorites.
+ */
 @Component({
   selector: 'app-movie-card',
   standalone: true,
@@ -35,10 +39,21 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 })
 
 export class MovieCard implements OnInit {
+  /** Full list of movies for display. */
   movies: any[] = [];
+
+  /** Set of favorited movie IDs for quick checks. */
   favoriteIds = new Set<string>();
+
+  /** Username of the currently logged in user (from localStorage). */
   username = '';
 
+  /**
+   * @param fetchApiData API service for movie/user endpoints.
+   * @param dialog Material dialog service for info dialogs.
+   * @param snackBar Snackbar for user feedback.
+   * @param router Router for auth redirects and logout.
+   */
   constructor(
     public fetchApiData: FetchApiData, 
     private dialog: MatDialog,
@@ -46,6 +61,11 @@ export class MovieCard implements OnInit {
     private router: Router
   ) {}
 
+  /**
+   * Initialize the page:
+   * - Redirect to welcome if unauthenticated
+   * - Load favorites and fetch movies
+   */
   ngOnInit(): void {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -57,6 +77,9 @@ export class MovieCard implements OnInit {
     this.getMovies();
   }
 
+  /**
+   * Load username and favorite IDs from localStorage.
+   */
   private loadUserFavorites(): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     this.username = user?.username || user?.Username || '';
@@ -64,6 +87,10 @@ export class MovieCard implements OnInit {
     this.favoriteIds = new Set(favs?.map(String));
   }
 
+  /**
+   * Persist a new favorite list to localStorage and update local state.
+   * @param newFavs Movie IDs returned by the backend.
+   */
   private persistUserFavorites(newFavs: string[]): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     user.favoriteMovies = newFavs;
@@ -71,6 +98,9 @@ export class MovieCard implements OnInit {
     this.favoriteIds = new Set(newFavs.map(String));
   }
 
+  /**
+   * Fetch all movies from the API for display.
+   */
   getMovies(): void {
     this.fetchApiData.getAllMovies().subscribe({
       next: (resp: any) => { this.movies = resp || []; },
@@ -80,11 +110,18 @@ export class MovieCard implements OnInit {
     });
   }
 
-  // UI helpers
+  /**
+   * Check if a movie ID is currently favorited.
+   * @param movieId Movie ObjectId.
+   */
   isFavorited(movieId: string): boolean {
     return this.favoriteIds.has(String(movieId));
   }
 
+  /**
+   * Toggle favorite state for a given movie.
+   * @param movie Movie object from the list.
+   */
   toggleFavorite(movie: any): void {
     const id = String(movie?._id);
     if (!this.username || !id) {
@@ -98,6 +135,10 @@ export class MovieCard implements OnInit {
     }
   }
 
+  /**
+   * Add a movie to favorites and persist the updated list.
+   * @param movieId Movie ObjectId.
+   */
   private addFavorite(movieId: string): void {
     this.fetchApiData.addFavoriteMovie(this.username, movieId).subscribe({
       next: (updatedUser: any) => {
@@ -109,6 +150,10 @@ export class MovieCard implements OnInit {
     });
   }
 
+  /**
+   * Remove a movie from favorites and persist the updated list.
+   * @param movieId Movie ObjectId.
+   */
   private removeFavorite(movieId: string): void {
     this.fetchApiData.removeFavoriteMovie(this.username, movieId).subscribe({
       next: (updatedUser: any) => {
@@ -123,6 +168,9 @@ export class MovieCard implements OnInit {
   
 
   // Dialogs
+  /**
+   * Open the Genre details dialog for a movie.
+   */
   openGenre(movie: any)   { 
     this.dialog.open(GenreDialog, {
     width: '420px',
@@ -137,6 +185,9 @@ export class MovieCard implements OnInit {
    });
   }
 
+  /**
+   * Open the Director details dialog for a movie.
+   */
   openDirector(movie: any){ 
     this.dialog.open(DirectorDialog, {
       width: '420px',
@@ -153,6 +204,9 @@ export class MovieCard implements OnInit {
     });
   }
 
+  /**
+   * Open the Synopsis dialog for a movie.
+   */
   openSynopsis(movie: any){ 
     this.dialog.open(SynopsisDialog, {
       width: '420px',
@@ -167,11 +221,18 @@ export class MovieCard implements OnInit {
     });
   }
 
+  /**
+   * Logout session and navigate back to the welcome page.
+   */
   logout(): void {
     localStorage.clear();
     this.router.navigate(['/myFlix-Angular-client/welcome']);
   }
 
+  /**
+   * Replace broken poster images with a placeholder.
+   * @param event Browser image error event.
+   */
   handleImageError(event: any): void {
     (event.target as HTMLImageElement).src = 'https://via.placeholder.com/300x450/cccccc/666666?text=No+Image';
   }

@@ -1,0 +1,13 @@
+src\app\dialogs\director-dialog\director-dialog.ts
+src\app\dialogs\genre-dialog\genre-dialog.ts
+src\app\dialogs\synopsis-dialog\synopsis-dialog.ts
+src\app\movie-card\movie-card.ts
+src\app\profile\profile.ts
+src\app\user-login-form\user-login-form.ts
+src\app\user-registration-form\user-registration-form.ts
+src\app\welcome-page\welcome-page.ts
+src\app\app.config.ts
+src\app\app.routes.ts
+src\app\app.ts
+src\app\auth.guard.ts
+src\app\fetch-api-data.ts

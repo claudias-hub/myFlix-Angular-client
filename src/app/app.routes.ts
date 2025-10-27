@@ -6,6 +6,10 @@ import { MovieCard } from './movie-card/movie-card';
 import { Profile } from './profile/profile';
 import { authGuard } from './auth.guard';
 
+/**
+ * Application routes.
+ * Note: Paths are prefixed for GitHub Pages deployment under /myFlix-Angular-client/.
+ */
 export const appRoutes: Routes = [
     { path: 'myFlix-Angular-client/welcome', component: WelcomePage },
     { path: 'myFlix-Angular-client/movies', component: MovieCard, canActivate: [authGuard] },

@@ -1,6 +1,12 @@
+// src/app/app.spec.ts
+
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 
+/**
+ * Unit tests for the root App component.
+ * Verifies creation and basic rendering.
+ */
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({

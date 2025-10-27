@@ -13,6 +13,10 @@ import { Router, RouterLink } from '@angular/router';
 import { FetchApiData } from '../fetch-api-data';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+/**
+ * Profile page for viewing and editing user data.
+ * Allows updating email/birthday, changing password, managing favorites, and account deletion.
+ */
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -33,16 +37,32 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 })
 
 export class Profile implements OnInit {
+  /** User view model used by the template. */
   user: any = { username: '', email: '', birthday: '' };
-  favoriteIds = new Set<string>();
-  movies: any[] = []; // optionally display favorite movie cards
 
+  /** Set of favorite movie IDs for quick lookups and toggles. */
+  favoriteIds = new Set<string>();
+
+  /** List of movies to display favorite cards. */
+  movies: any[] = []; 
+
+  /**
+   * @param api API service for user/movie calls.
+   * @param snack Snackbar for user feedback.
+   * @param router Router to redirect unauthenticated users and after destructive actions.
+   */
   constructor(
     private api: FetchApiData, 
     private snack: MatSnackBar,
     private router: Router
   ) {}
 
+  /**
+   * Initialize the page:
+   * - Redirect to welcome if not authenticated
+   * - Load user data from localStorage
+   * - Fetch full movie list to display favorite cards
+   */
   ngOnInit(): void {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -54,6 +74,9 @@ export class Profile implements OnInit {
     this.fetchFavoritesList();
   }
 
+  /**
+   * Populate the local `user` model and `favoriteIds` from localStorage.
+   */
   loadUserFromStorage(): void {
     const u = JSON.parse(localStorage.getItem('user') || '{}');
     this.user.username = u?.username || u?.Username || '';
@@ -63,6 +86,9 @@ export class Profile implements OnInit {
     this.favoriteIds = new Set(favs.map(String));
   }
 
+  /**
+   * Fetch all movies and filter them by the user's favorites for display.
+   */
   fetchFavoritesList(): void {
     // reuse getAllMovies and filter by favoriteIds to show favorite cards
     this.api.getAllMovies().subscribe({
@@ -71,6 +97,10 @@ export class Profile implements OnInit {
     });
   }
 
+  /**
+   * Save profile changes (email/birthday) to the backend.
+   * Reloads user data from the server response.
+   */
   saveProfile(): void {
     // Map to API expectations
     const payload = {
@@ -93,6 +123,10 @@ export class Profile implements OnInit {
     });
   }
 
+  /**
+   * Update the user's password.
+   * @param newPassword New password to set.
+   */
   changePassword(newPassword: string): void {
     if (!newPassword) return;
     this.api.editUser(this.user.username, { password: newPassword }).subscribe({
@@ -101,6 +135,11 @@ export class Profile implements OnInit {
     });
   }
 
+  /**
+   * Remove a movie from the user's favorites.
+   * Updates localStorage and local state on success.
+   * @param movieId Movie ObjectId to remove.
+   */
   removeFavorite(movieId: string): void {
     const username = this.user.username;
     this.api.removeFavoriteMovie(username, movieId).subscribe({
@@ -115,6 +154,10 @@ export class Profile implements OnInit {
     });
   }
 
+  /**
+   * Permanently delete the current user's account after confirmation.
+   * Clears local storage and navigates back to the welcome page.
+   */
   deleteAccount(): void {
     if (!confirm('Delete your account? This cannot be undone.')) return; 
     this.api.deleteUser(this.user.username).subscribe({
@@ -127,6 +170,9 @@ export class Profile implements OnInit {
     });
   }
 
+  /**
+   * Clear local session and redirect to the welcome page.
+   */
   logout(): void {
     localStorage.clear();
     this.snack.open('Logged out', 'OK', { duration: 1200 });

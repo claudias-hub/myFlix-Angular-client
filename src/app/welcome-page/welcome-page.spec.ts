@@ -1,3 +1,5 @@
+// src/app/welcome-page/welcome-page.spec.ts
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WelcomePage } from './welcome-page';

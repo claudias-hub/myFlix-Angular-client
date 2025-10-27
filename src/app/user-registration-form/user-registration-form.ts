@@ -3,7 +3,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
@@ -12,13 +11,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-
-
 import { UserLoginForm } from '../user-login-form/user-login-form';
-
 import { FetchApiData } from '../fetch-api-data';
 
-
+/**
+ * Dialog component for new user registration.
+ * Normalizes birthday values and maps form fields to backend expectations.
+ */
 @Component({
   selector: 'app-user-registration-form',
   standalone: true,  
@@ -37,10 +36,20 @@ import { FetchApiData } from '../fetch-api-data';
   templateUrl: './user-registration-form.html',
   styleUrls: ['./user-registration-form.scss']
 })
+
 export class UserRegistrationForm {
+   /** Form model bound to the template. */
    userData = { Username: '', Password: '', Email: '', Birthday: '' };
+
+   /** Prevents duplicate submissions. */
    isSubmitting = false;
 
+   /**
+   * @param fetchApiData API service for HTTP calls.
+   * @param dialogRef Material dialog reference for closing the dialog.
+   * @param snackBar Snackbar for user feedback.
+   * @param dialog Material dialog service (used to open login after error).
+   */
    constructor(
       private fetchApiData: FetchApiData,
       private dialogRef: MatDialogRef<UserRegistrationForm>,
@@ -48,7 +57,12 @@ export class UserRegistrationForm {
       private dialog: MatDialog
    ) {}
 
-   // Normalize birthday to yyyy-mm-dd and map to backend’s lowercase keys
+   /**
+   * Normalize a variety of date inputs (Date object or string like dd/mm/yyyy)
+   * into ISO-like yyyy-mm-dd which the backend accepts.
+   * @param val Raw date value from the form.
+   * @returns Normalized string or undefined if invalid.
+   */
    private normalizeBirthday(val: any): string | undefined {
      if (!val) return undefined;
      if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(val)) return val;
@@ -79,6 +93,11 @@ export class UserRegistrationForm {
      return undefined;
    }
 
+   /**
+   * Submit the registration form to the API.
+   * Shows success feedback and closes the dialog, or displays error details.
+   * @param form Optional Angular form reference (for future validation hooks).
+   */
    registerUser(form?: NgForm): void {
      if (this.isSubmitting) return;
      this.isSubmitting = true;
@@ -97,7 +116,7 @@ export class UserRegistrationForm {
          this.snackBar.open('Registered successfully', 'OK', { duration: 2000 });
        },
        error: (err) => {
-         // Try to extract useful messages from your backend
+         // Derive a readable error message from backend response.
          let msg = 'Registration failed';
          const e = err?.error;
 
@@ -107,7 +126,7 @@ export class UserRegistrationForm {
          
          console.error('Registration error details:', err);
 
-         // Optional: if username already exists, show a snackbar action to open login dialog 
+         // Offer to open the login dialog when username already exists.
          if (e?.message === 'Username already exists') {
           const ref = this.snackBar.open('Username already exists. Log in instead?', 'Login', { duration: 5000 });
           ref.onAction().subscribe(() => {

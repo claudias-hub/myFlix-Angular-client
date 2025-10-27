@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
@@ -12,9 +11,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { finalize } from 'rxjs/operators';
-
 import { FetchApiData } from '../fetch-api-data';
 
+/**
+ * Dialog component for user login.
+ * Persists JWT and user data to localStorage on success and navigates to Movies.
+ */
 @Component({
   selector: 'app-user-login-form',
   standalone: true,
@@ -31,11 +33,23 @@ import { FetchApiData } from '../fetch-api-data';
   templateUrl: './user-login-form.html',
   styleUrls: ['./user-login-form.scss']
 })
+
 export class UserLoginForm {
+  /** Two-way bound model for credentials. */
   userData = { Username: '', Password: '' };
+
+  /** Prevents duplicate submissions while request is pending. */
   isSubmitting = false;
+
+  /** Toggles password visibility in the UI. */
   showPassword = false;
   
+  /**
+   * @param api API service for auth call.
+   * @param dialogRef Material dialog reference to close on success.
+   * @param snack Snackbar for user feedback.
+   * @param router Router for navigation to the Movies page.
+   */
   constructor(
     private api: FetchApiData,
     private dialogRef: MatDialogRef<UserLoginForm>,
@@ -43,11 +57,16 @@ export class UserLoginForm {
     private router: Router
   ) {}
   
+  /**
+   * Submit login credentials to the API.
+   * Stores `{ token, user }` in localStorage on success and navigates to the movies page.
+   * @param form Optional Angular form reference (for future validation hooks).
+   */
   loginUser(form?: NgForm): void {
     if (this.isSubmitting) return;
     this.isSubmitting = true;
 
-    // Map to backend keys. Your auth.js typically expects { username, password }.
+    // Map to backend keys.
     const payload = {
       username: this.userData.Username?.trim(),
       password: this.userData.Password

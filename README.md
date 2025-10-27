@@ -1,97 +1,117 @@
 # MyFlixAngularClient
 
-* Overview
-MyFlix Angular Client is the frontend for the myFlix movie API. It’s built with Angular (standalone app, routing + SCSS) and will grow to include login/registration, movie list, single movie view, and profile management.
+## Overview
+MyFlix Angular Client is the frontend for the myFlix movie API. It’s built with Angular (standalone app, routing + SCSS) and includes: 
+- login/registration 
+- movie list & single movie view
+- profile management.
 
-* Backend API
-Base URL: https://movie-api-w67x.onrender.com/
-Auth: JWT token returned by POST /login must be sent as Bearer token for protected routes.
+---
 
-* Prerequisites
-Node.js 18+ and npm
-Angular CLI (installed globally): npm install -g @angular/cli
+## Backend API
+- Base URL: [https://movie-api-w67x.onrender.com/](https://movie-api-w67x.onrender.com/)
+- Auth: JWT token returned by `POST /login` must be sent as `Authorization: Bearer <token>` for protected routes.
 
-* Run locally
+---
+
+## Handoff / Setup Manual
+
+### Prerequisites
+- Node.js 18+ and npm
+- Angular CLI:
+
+```bash
+npm install -g @angular/cli
+```
+
+## Environment
+API base URL is configured in `src/environments/environment.ts` (and `environment.prod.ts`):
+
+```ts
+export const environment = {
+  production: false,
+  apiBaseUrl: 'https://movie-api-w67x.onrender.com'
+};
+```
+If your backend changes, update `apiBaseUrl` accordingly.
+
+
+## Install & Run
+
+```bash
 npm install
 ng serve --open
-
-* API Service (fetch-api-data.ts)
-
-- Public:
-POST /users — userRegistration(userDetails)
-POST /login — userLogin(userDetails)
-
-- Protected (send Authorization: Bearer ):
-GET /movies — getAllMovies()
-GET /movies/:title — getMovieByTitle(title)
-GET /directors/:name — getDirectorByName(name)
-GET /genres/:name — getGenreByName(name)
-GET /users/:username — getUser(username)
-GET /users/:username/movies — getFavoriteMovies(username)
-POST /users/:username/movies/:movieId — addFavoriteMovie(username, movieId)
-PUT /users/:username — editUser(username, updateData)
-DELETE /users/:username — deleteUser(username)
-DELETE /users/:username/movies/:movieId — removeFavoriteMovie(username, movieId)
-
-* Notes
-This project uses Angular’s standalone setup (no app.module.ts). HttpClient is provided in app.config.ts via provideHttpClient().
+```
+App runs at http://localhost:4200/
 
 
+## Documentation
+- TypeDoc output (after generation): ./docs/index.html
+- GitHub Pages: https://claudias-hub.github.io/myFlix-Angular-client/
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.5.
+### Generate docs:
 
-## Development server
+```bash
+npm run docs
+# then open:
+docs/index.html
+```
 
-To start a local development server, run:
+## API Service (fetch-api-data.ts) :
+### Public:
+- POST /users — userRegistration(userDetails)
+- POST /login — userLogin(userDetails)
+
+### Protected (send Authorization: Bearer <token>):
+- GET /movies — getAllMovies()
+- GET /movies/:title — getMovieByTitle(title)
+- GET /directors/:name — getDirectorByName(name)
+- GET /genres/:name — getGenreByName(name)
+- GET /users/:username — getUser(username)
+- GET /users/:username/movies — getFavoriteMovies(username)
+- POST /users/:username/movies/:movieId — addFavoriteMovie(username, movieId)
+- PUT /users/:username — editUser(username, updateData)
+- DELETE /users/:username — deleteUser(username)
+- DELETE /users/:username/movies/:movieId — removeFavoriteMovie(username, movieId)
+
+### Notes
+- Standalone Angular setup (no app.module.ts).
+- HttpClient is provided in app.config.ts via provideHttpClient().
+
+### This project was generated using Angular CLI version 20.3.5.
+
+## Scripts
+- Development server:
 
 ```bash
 ng serve
+Open http://localhost:4200/.
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Building:
 
-## Code scaffolding
+```bash
+ng build
+Build output in dist/.
+```
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Code scaffolding:
 
 ```bash
 ng generate component component-name
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- For more schematics: 
 
 ```bash
 ng generate --help
 ```
 
-## Building
 
-To build the project run:
+## Known Issues / TODO
+- Improve error handling for auth failures (snackbars/messages).
+- Add e2e tests when feature set stabilizes.
 
-```bash
-ng build
-```
+## AI Use Declaration
+Parts of this project’s documentation and code comments were drafted with assistance from an AI assistant (Abacus.AI ChatLLM Teams).
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

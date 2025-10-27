@@ -1,0 +1,19 @@
+{
+  "entryPoints": ["src/app"],
+  "entryPointStrategy": "expand",
+  "out": "docs",
+  "tsconfig": "tsconfig.app.json",
+  "exclude": [
+    "**/*.spec.ts",
+    "src/test.ts",
+    "src/environments/**", 
+    "**/*.scss", 
+    "**/*.html"
+  ],
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "readme": "README.md",
+  "plugin": []
+}
+
