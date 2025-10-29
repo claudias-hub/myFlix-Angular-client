@@ -49,13 +49,15 @@ App runs at http://localhost:4200/
 - TypeDoc output (after generation): ./docs/index.html
 - GitHub Pages: https://claudias-hub.github.io/myFlix-Angular-client/
 
-### Generate docs:
+## Generate docs:
 
 ```bash
 npm run docs
-# then open:
-docs/index.html
 ```
+
+### then open:
+docs/index.html
+
 
 ## API Service (fetch-api-data.ts) :
 ### Public:
@@ -77,23 +79,24 @@ docs/index.html
 ### Notes
 - Standalone Angular setup (no app.module.ts).
 - HttpClient is provided in app.config.ts via provideHttpClient().
-
-### This project was generated using Angular CLI version 20.3.5.
+- Generated with Angular CLI 20.3.5
 
 ## Scripts
 - Development server:
 
 ```bash
 ng serve
-Open http://localhost:4200/.
 ```
+### then open:
+Open http://localhost:4200/.
 
 - Building:
 
 ```bash
 ng build
-Build output in dist/.
 ```
+
+Build output in dist/.
 
 - Code scaffolding:
 
@@ -107,6 +110,8 @@ ng generate component component-name
 ng generate --help
 ```
 
+## Kanban board
+GitHub Projects: https://github.com/users/claudias-hub/projects/1/views/1
 
 ## Known Issues / TODO
 - Improve error handling for auth failures (snackbars/messages).
