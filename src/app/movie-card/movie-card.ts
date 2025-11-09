@@ -226,7 +226,7 @@ export class MovieCard implements OnInit {
    */
   logout(): void {
     localStorage.clear();
-    this.router.navigate(['/myFlix-Angular-client/welcome']);
+    this.router.navigate(['/welcome']);
   }
 
   /**
